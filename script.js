@@ -6,12 +6,13 @@
 // ===== FIREBASE CONFIGURATION =====
 // ★★★ ĐIỀN THÔNG TIN FIREBASE CỦA BẠN VÀO ĐÂY ★★★
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyB5bpeGx1AV7ZPwJkoOAPBWsFhCNtsF1yU",
+    authDomain: "graduationinvitation-194ee.firebaseapp.com",
+    projectId: "graduationinvitation-194ee",
+    storageBucket: "graduationinvitation-194ee.firebasestorage.app",
+    messagingSenderId: "467155750733",
+    appId: "1:467155750733:web:e44990f4a4a0652e693104",
+    measurementId: "G-H42K0P2T9C"
 };
 
 // Initialize Firebase
@@ -72,7 +73,7 @@ function createParticles() {
             animation-delay: ${delay}s;
             animation-duration: ${duration}s;
             opacity: ${opacity};
-            background: ${Math.random() > 0.5 ? 'var(--gold-primary)' : 'var(--gold-light)'};
+            background: ${['var(--pink)', 'var(--green)', 'var(--yellow)', 'var(--blue)', 'var(--lavender)'][Math.floor(Math.random() * 5)]};
         `;
         
         container.appendChild(particle);
@@ -86,7 +87,7 @@ createParticles();
 // ============================================
 function launchConfetti() {
     const container = document.getElementById('confetti');
-    const colors = ['#d4af37', '#f0d27f', '#e8a0bf', '#f5e6cc', '#b8941f', '#fff'];
+    const colors = ['#e8a0bf', '#7ecb8b', '#f5d76e', '#8eb5e0', '#c5b3e6', '#f8c8dc', '#fae9a0'];
     const shapes = ['square', 'circle'];
     
     for (let i = 0; i < 80; i++) {
@@ -394,7 +395,7 @@ console.log(
     '%cHọc Viện Công Nghệ Bưu Chính Viễn Thông - PTIT\n' +
     'Thứ Bảy, 26/09 lúc 13:00\n\n' +
     '💛 Cảm ơn bạn đã ghé thăm!',
-    'font-size: 20px; font-weight: bold; color: #d4af37; background: #0a0a1a; padding: 10px 20px; border-radius: 5px;',
+    'font-size: 20px; font-weight: bold; color: #e8a0bf; background: #f5f0e8; padding: 10px 20px; border-radius: 5px;',
     '',
-    'font-size: 12px; color: #f5e6cc;'
+    'font-size: 12px; color: #555;'
 );
