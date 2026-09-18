@@ -32,6 +32,7 @@ const envelopeOverlay = document.getElementById('envelopeOverlay');
 const mainContent = document.getElementById('mainContent');
 
 envelopeOverlay.addEventListener('click', () => {
+    startThemeMusic();
     envelopeOverlay.classList.add('hidden');
     setTimeout(() => {
         mainContent.classList.add('visible');
@@ -48,6 +49,171 @@ setTimeout(() => {
         }, 400);
     }
 }, 8000);
+
+// ============================================
+// BACKGROUND MUSIC
+// ============================================
+const musicToggle = document.getElementById('musicToggle');
+
+let audioContext = null;
+let musicMasterGain = null;
+let musicTimer = null;
+let nextMusicLoopStart = 0;
+let isMusicPlaying = false;
+
+const musicTempo = 92;
+const beatDuration = 60 / musicTempo;
+const musicLoopBeats = 32;
+
+const noteFrequencies = {
+    C3: 130.81,
+    D3: 146.83,
+    E3: 164.81,
+    F3: 174.61,
+    G3: 196.00,
+    A3: 220.00,
+    B3: 246.94,
+    C4: 261.63,
+    D4: 293.66,
+    E4: 329.63,
+    F4: 349.23,
+    G4: 392.00,
+    A4: 440.00,
+    B4: 493.88,
+    C5: 523.25,
+    D5: 587.33,
+    E5: 659.25,
+    F5: 698.46,
+    G5: 783.99,
+    A5: 880.00,
+    C6: 1046.50
+};
+
+const musicMelody = [
+    ['C5', 0, 1], ['E5', 1, 1], ['G5', 2, 1], ['E5', 3, 1],
+    ['D5', 4, 1], ['F5', 5, 1], ['A5', 6, 1], ['F5', 7, 1],
+    ['E5', 8, 1], ['G5', 9, 1], ['C6', 10, 1], ['G5', 11, 1],
+    ['A5', 12, 1], ['G5', 13, 1], ['E5', 14, 1], ['C5', 15, 1.5],
+    ['F5', 16, 1], ['A5', 17, 1], ['G5', 18, 1], ['E5', 19, 1],
+    ['D5', 20, 1], ['E5', 21, 1], ['G5', 22, 1], ['D5', 23, 1],
+    ['C5', 24, 1], ['E5', 25, 1], ['G5', 26, 1], ['C6', 27, 1],
+    ['B4', 28, 1], ['G5', 29, 1], ['E5', 30, 1], ['C5', 31, 1]
+];
+
+const musicBass = [
+    ['C3', 0, 4], ['F3', 4, 4], ['C3', 8, 4], ['G3', 12, 4],
+    ['A3', 16, 4], ['F3', 20, 4], ['C3', 24, 4], ['G3', 28, 4]
+];
+
+function ensureAudioContext() {
+    if (audioContext) return;
+
+    const AudioCtor = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtor) {
+        if (musicToggle) musicToggle.style.display = 'none';
+        return;
+    }
+
+    audioContext = new AudioCtor();
+    musicMasterGain = audioContext.createGain();
+    musicMasterGain.gain.value = 0;
+    musicMasterGain.connect(audioContext.destination);
+}
+
+function playNote(note, start, duration, type, volume) {
+    if (!audioContext || !musicMasterGain || !noteFrequencies[note]) return;
+
+    const oscillator = audioContext.createOscillator();
+    const noteGain = audioContext.createGain();
+    const safeDuration = Math.max(0.08, duration);
+
+    oscillator.type = type;
+    oscillator.frequency.setValueAtTime(noteFrequencies[note], start);
+    noteGain.gain.setValueAtTime(0, start);
+    noteGain.gain.linearRampToValueAtTime(volume, start + 0.03);
+    noteGain.gain.exponentialRampToValueAtTime(0.001, start + safeDuration);
+
+    oscillator.connect(noteGain);
+    noteGain.connect(musicMasterGain);
+    oscillator.start(start);
+    oscillator.stop(start + safeDuration + 0.04);
+}
+
+function scheduleMusicLoop(startTime) {
+    musicMelody.forEach(([note, beat, beats]) => {
+        playNote(note, startTime + beat * beatDuration, beats * beatDuration * 0.88, 'triangle', 0.11);
+    });
+
+    musicBass.forEach(([note, beat, beats]) => {
+        playNote(note, startTime + beat * beatDuration, beats * beatDuration * 0.94, 'sine', 0.07);
+    });
+}
+
+function scheduleAheadMusic() {
+    if (!audioContext || !isMusicPlaying) return;
+
+    while (nextMusicLoopStart < audioContext.currentTime + 3) {
+        scheduleMusicLoop(nextMusicLoopStart);
+        nextMusicLoopStart += musicLoopBeats * beatDuration;
+    }
+}
+
+async function startThemeMusic() {
+    ensureAudioContext();
+    if (!audioContext || !musicMasterGain || isMusicPlaying) return;
+
+    await audioContext.resume();
+    isMusicPlaying = true;
+    nextMusicLoopStart = audioContext.currentTime + 0.08;
+    musicMasterGain.gain.cancelScheduledValues(audioContext.currentTime);
+    musicMasterGain.gain.setValueAtTime(musicMasterGain.gain.value, audioContext.currentTime);
+    musicMasterGain.gain.linearRampToValueAtTime(0.18, audioContext.currentTime + 1.2);
+
+    scheduleAheadMusic();
+    musicTimer = setInterval(scheduleAheadMusic, 1000);
+    updateMusicButton();
+}
+
+function stopThemeMusic() {
+    if (!audioContext || !musicMasterGain || !isMusicPlaying) return;
+
+    const contextToClose = audioContext;
+    isMusicPlaying = false;
+    clearInterval(musicTimer);
+    musicTimer = null;
+    musicMasterGain.gain.cancelScheduledValues(audioContext.currentTime);
+    musicMasterGain.gain.setValueAtTime(musicMasterGain.gain.value, audioContext.currentTime);
+    musicMasterGain.gain.linearRampToValueAtTime(0.001, audioContext.currentTime + 0.4);
+    updateMusicButton();
+
+    setTimeout(() => {
+        if (!isMusicPlaying && audioContext === contextToClose) {
+            contextToClose.close();
+            audioContext = null;
+            musicMasterGain = null;
+        }
+    }, 500);
+}
+
+function updateMusicButton() {
+    if (!musicToggle) return;
+
+    musicToggle.classList.toggle('is-playing', isMusicPlaying);
+    musicToggle.classList.toggle('is-muted', !isMusicPlaying);
+    musicToggle.setAttribute('aria-label', isMusicPlaying ? 'Tat nhac nen' : 'Bat nhac nen');
+    musicToggle.title = isMusicPlaying ? 'Tat nhac nen' : 'Bat nhac nen';
+}
+
+if (musicToggle) {
+    updateMusicButton();
+    musicToggle.addEventListener('click', () => {
+        if (isMusicPlaying) {
+            stopThemeMusic();
+        } else {
+            startThemeMusic();
+        }
+    });
+}
 
 // ============================================
 // FLOATING PARTICLES

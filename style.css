@@ -5,7 +5,7 @@
    ============================================ */
 
 /* --- Google Fonts Import --- */
-@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&family=Comic+Neue:ital,wght@0,400;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=Nunito:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap');
 
 /* --- CSS Custom Properties --- */
 :root {
@@ -38,8 +38,8 @@
   --shadow-pressed: 1px 1px 0px #2d2d2d;
   --transition-smooth: all 0.3s ease;
   --transition-bounce: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  --font-heading: 'Fredoka', sans-serif;
-  --font-body: 'Comic Neue', cursive, sans-serif;
+  --font-heading: 'Be Vietnam Pro', sans-serif;
+  --font-body: 'Nunito', sans-serif;
   --radius: 16px;
   --radius-sm: 10px;
   --radius-lg: 24px;
@@ -1219,6 +1219,63 @@ body::after {
 
 .admin-trigger:hover {
   opacity: 0.3;
+}
+
+/* ============================================
+   BACKGROUND MUSIC
+   ============================================ */
+.music-toggle {
+  position: fixed;
+  left: 18px;
+  bottom: 18px;
+  width: 46px;
+  height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--yellow-light);
+  color: var(--text-primary);
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  z-index: 120;
+  transition: var(--transition-bounce);
+}
+
+.music-toggle:hover {
+  background: var(--yellow);
+  transform: translate(-2px, -2px) rotate(-5deg);
+  box-shadow: var(--shadow);
+}
+
+.music-toggle.is-playing {
+  background: var(--green-light);
+}
+
+.music-toggle.is-muted {
+  background: var(--pink-light);
+}
+
+.music-toggle-icon {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.music-toggle.is-playing .music-toggle-icon {
+  animation: musicPulse 1.4s ease-in-out infinite;
+}
+
+@keyframes musicPulse {
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.12) rotate(6deg);
+  }
 }
 
 /* ============================================
