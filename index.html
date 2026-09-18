@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Thiệp mời Lễ Tốt Nghiệp của Huyền Linh - Học Viện Công Nghệ Bưu Chính Viễn Thông PTIT. Thứ Bảy, 26.09 lúc 13:00.">
+    <meta name="theme-color" content="#0a0a1a">
+    <meta property="og:title" content="Lễ Tốt Nghiệp - Huyền Linh">
+    <meta property="og:description" content="Trân trọng kính mời bạn đến tham dự Lễ Tốt Nghiệp của Huyền Linh">
+    <meta property="og:type" content="website">
+    <title>Lễ Tốt Nghiệp - Huyền Linh | Thiệp Mời</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+</head>
+<body>
+
+    <!-- ======== ENVELOPE OVERLAY ======== -->
+    <div class="envelope-overlay" id="envelopeOverlay">
+        <div class="envelope-container">
+            <img src="assets/envelope_bg.jpg" alt="Thiệp mời" class="envelope-img">
+        </div>
+        <p class="envelope-label">Huyền Linh</p>
+        <p class="envelope-hint">Nhấn để mở thiệp</p>
+    </div>
+
+    <!-- ======== FLOATING PARTICLES ======== -->
+    <div class="particles-container" id="particles"></div>
+
+    <!-- ======== CONFETTI CONTAINER ======== -->
+    <div class="confetti-container" id="confetti"></div>
+
+    <!-- ======== MAIN CONTENT ======== -->
+    <main class="main-content" id="mainContent">
+
+        <!-- ---- HERO SECTION ---- -->
+        <section class="hero" id="hero">
+            <!-- Background decoration -->
+            <img src="assets/graduation_decor.jpg" alt="" class="hero-decor" aria-hidden="true">
+
+            <span class="hero-badge">🎓 Graduation Ceremony</span>
+
+            <div class="hero-photo-container">
+                <div class="hero-photo-glow"></div>
+                <img src="assets/gold_frame.jpg" alt="" class="hero-photo-frame" aria-hidden="true">
+                <!-- ★ THAY ẢNH NÀY BẰNG ẢNH CỦA BẠN: đặt ảnh vào thư mục assets/ với tên avatar.jpg ★ -->
+                <img src="assets/avatar.jpg" alt="Huyền Linh" class="hero-photo" 
+                     onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 200 200%27%3E%3Crect fill=%27%230f1035%27 width=%27200%27 height=%27200%27/%3E%3Ctext x=%2750%25%27 y=%2750%25%27 font-size=%2760%27 text-anchor=%27middle%27 dy=%27.35em%27%3E🎓%3C/text%3E%3C/svg%3E'">
+            </div>
+
+            <p class="hero-pre-title fade-in">Trân trọng kính mời bạn đến tham dự</p>
+
+            <h1 class="hero-title">Lễ Tốt Nghiệp</h1>
+
+            <p class="hero-name">Huyền Linh</p>
+
+            <p class="hero-subtitle fade-in">Học Viện Công Nghệ Bưu Chính Viễn Thông — PTIT</p>
+
+            <div class="gold-divider">
+                <span class="line"></span>
+                <span class="diamond"></span>
+                <span class="line"></span>
+            </div>
+
+            <div class="hero-date">
+                <span class="date-icon">📅</span>
+                <span>Thứ Bảy, 26 Tháng 09 • 13:00</span>
+            </div>
+
+            <div class="scroll-indicator">
+                <span>Cuộn xuống</span>
+                <div class="scroll-line"></div>
+            </div>
+        </section>
+
+        <!-- ---- COUNTDOWN ---- -->
+        <section class="countdown-section fade-in" id="countdown">
+            <div class="section-ornament">✦</div>
+            <div class="section-header">
+                <p class="section-label">Đếm ngược</p>
+                <h2>Sự Kiện Sắp Diễn Ra</h2>
+            </div>
+            <div class="countdown-wrapper">
+                <div class="countdown-item">
+                    <span class="countdown-number" id="countDays">00</span>
+                    <span class="countdown-label">Ngày</span>
+                </div>
+                <span class="countdown-separator">:</span>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="countHours">00</span>
+                    <span class="countdown-label">Giờ</span>
+                </div>
+                <span class="countdown-separator">:</span>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="countMinutes">00</span>
+                    <span class="countdown-label">Phút</span>
+                </div>
+                <span class="countdown-separator">:</span>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="countSeconds">00</span>
+                    <span class="countdown-label">Giây</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ---- EVENT INFO ---- -->
+        <section class="event-section" id="eventInfo">
+            <div class="section-ornament">✦</div>
+            <div class="section-header">
+                <p class="section-label">Thông tin sự kiện</p>
+                <h2>Chi Tiết Buổi Lễ</h2>
+            </div>
+
+            <div class="event-cards">
+                <div class="event-card fade-in-left">
+                    <span class="card-icon">📅</span>
+                    <h3>Ngày &amp; Giờ</h3>
+                    <p>
+                        <span class="highlight">Thứ Bảy, 26 Tháng 09</span><br>
+                        Bắt đầu lúc <span class="highlight">13:00</span>
+                    </p>
+                </div>
+
+                <div class="event-card fade-in-right">
+                    <span class="card-icon">📍</span>
+                    <h3>Địa Điểm</h3>
+                    <p>Học Viện Công Nghệ<br>Bưu Chính Viễn Thông — PTIT</p>
+                    <a href="https://maps.google.com/?q=Học+Viện+Công+Nghệ+Bưu+Chính+Viễn+Thông+PTIT" target="_blank" rel="noopener" class="map-link">
+                        📌 Xem bản đồ
+                    </a>
+                </div>
+
+                <div class="event-card fade-in-left">
+                    <span class="card-icon">👗</span>
+                    <h3>Dress Code</h3>
+                    <p>Trang phục lịch sự,<br>thanh lịch</p>
+                </div>
+
+                <div class="event-card fade-in-right">
+                    <span class="card-icon">📞</span>
+                    <h3>Liên Hệ</h3>
+                    <p>Huyền Linh</p>
+                    <a href="tel:0972555178" class="map-link">
+                        📱 0972 555 178
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ---- RSVP SECTION ---- -->
+        <section class="rsvp-section" id="rsvp">
+            <div class="section-ornament">✦</div>
+            <div class="section-header">
+                <p class="section-label">Xác nhận tham dự</p>
+                <h2>Phản Hồi Của Bạn</h2>
+            </div>
+
+            <div class="rsvp-card scale-in">
+                <!-- RSVP FORM -->
+                <form id="rsvpForm">
+                    <div class="form-group">
+                        <label for="guestName">Họ và Tên <span class="required">*</span></label>
+                        <input type="text" id="guestName" class="form-input" placeholder="Nhập họ và tên của bạn" required autocomplete="name">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Xác nhận tham dự <span class="required">*</span></label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="attendance" id="attendYes" value="yes" required>
+                                <label for="attendYes">
+                                    <span class="radio-icon">🎉</span>
+                                    Có, tôi sẽ đến!
+                                </label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="attendance" id="attendNo" value="no">
+                                <label for="attendNo">
+                                    <span class="radio-icon">😢</span>
+                                    Rất tiếc, không thể
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="guestCountGroup">
+                        <label>Số người đi cùng</label>
+                        <div class="guest-count-wrapper">
+                            <button type="button" class="guest-count-btn" id="countMinus" aria-label="Giảm">−</button>
+                            <span class="guest-count-display" id="guestCountDisplay">0</span>
+                            <button type="button" class="guest-count-btn" id="countPlus" aria-label="Tăng">+</button>
+                            <input type="hidden" id="guestCount" value="0">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="wishes">Lời chúc 💌</label>
+                        <textarea id="wishes" class="form-textarea" placeholder="Gửi lời chúc đến Huyền Linh..." rows="4"></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        <span class="btn-text">✨ Gửi Phản Hồi</span>
+                        <span class="btn-loader">
+                            <span class="spinner"></span>
+                            Đang gửi...
+                        </span>
+                    </button>
+                </form>
+
+                <!-- SUCCESS MESSAGE -->
+                <div class="success-message" id="successMessage">
+                    <div class="success-icon">🎊</div>
+                    <h3>Cảm ơn bạn!</h3>
+                    <p>Phản hồi của bạn đã được ghi nhận.<br>Hẹn gặp bạn tại buổi lễ! 🎓</p>
+                    <div class="gold-divider">
+                        <span class="line"></span>
+                        <span class="diamond"></span>
+                        <span class="line"></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ---- FOOTER ---- -->
+        <footer class="footer">
+            <p class="footer-name">Huyền Linh</p>
+            <p class="footer-text">Trân trọng cảm ơn sự hiện diện của bạn 💛</p>
+            <div class="footer-contact">
+                <a href="tel:0972555178">📞 0972 555 178</a>
+            </div>
+        </footer>
+
+        <!-- Admin Trigger (hidden corner button) -->
+        <button class="admin-trigger" id="adminTrigger" title="Admin" aria-label="Admin access"></button>
+    </main>
+
+    <!-- ======== ADMIN PASSWORD MODAL ======== -->
+    <div class="admin-modal" id="adminModal">
+        <div class="admin-modal-content">
+            <h3>🔐 Truy cập Quản trị</h3>
+            <input type="password" class="form-input" id="adminPassword" placeholder="Nhập mật khẩu...">
+            <p class="admin-error" id="adminError">Mật khẩu không đúng!</p>
+            <div style="margin-top: 15px;">
+                <button class="admin-login-btn" id="adminLoginBtn">Đăng nhập</button>
+                <button class="admin-cancel-btn" id="adminCancelBtn">Hủy</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======== FIREBASE SDK ======== -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+    <!-- ======== MAIN SCRIPT ======== -->
+    <script src="script.js"></script>
+</body>
+</html>
