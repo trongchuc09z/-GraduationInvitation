@@ -5,7 +5,7 @@
    ============================================ */
 
 /* --- Google Fonts Import --- */
-@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=Nunito:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=Great+Vibes&family=Nunito:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap');
 
 /* --- CSS Custom Properties --- */
 :root {
@@ -40,6 +40,7 @@
   --transition-bounce: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   --font-heading: 'Be Vietnam Pro', sans-serif;
   --font-body: 'Nunito', sans-serif;
+  --font-handwriting: 'Great Vibes', 'UTM Great Vibes', cursive;
   --radius: 16px;
   --radius-sm: 10px;
   --radius-lg: 24px;
@@ -176,12 +177,12 @@ body::after {
 }
 
 .envelope-label {
-  font-family: var(--font-heading);
-  font-size: 2.2rem;
-  font-weight: 600;
+  font-family: var(--font-handwriting);
+  font-size: 3.3rem;
+  font-weight: 400;
+  line-height: 1.1;
   color: var(--text-primary);
   margin-top: 25px;
-  animation: floatBounce 2s ease-in-out infinite;
 }
 
 .envelope-hint {
@@ -198,11 +199,6 @@ body::after {
   border-radius: var(--radius-pill);
   border: 2px solid var(--border);
   box-shadow: var(--shadow-sm);
-}
-
-@keyframes floatBounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
 }
 
 @keyframes pulse {
@@ -1561,7 +1557,7 @@ body::after {
   }
 
   .envelope-label {
-    font-size: 1.6rem;
+    font-size: 2.5rem;
   }
 
   body::after {
