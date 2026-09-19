@@ -506,8 +506,13 @@ function handleAdminLogin() {
     const password = adminPassword.value.trim();
     
     if (password === ADMIN_PASSWORD) {
-        // Redirect to admin page
-        window.location.href = 'admin.html';
+        // Close the password modal
+        adminModal.classList.remove('visible');
+        adminPassword.value = '';
+        adminError.style.display = 'none';
+        
+        // Open embedded admin dashboard
+        showAdminPanel();
     } else {
         adminError.style.display = 'block';
         adminPassword.value = '';
@@ -521,6 +526,214 @@ function handleAdminLogin() {
         }, 3000);
     }
 }
+
+// ============================================
+// EMBEDDED ADMIN DASHBOARD
+// ============================================
+const adminPanel = document.getElementById('adminPanel');
+const adminCloseBtn = document.getElementById('adminCloseBtn');
+const adminRefreshBtn = document.getElementById('adminRefreshBtn');
+const adminExportBtn = document.getElementById('adminExportBtn');
+
+let allAdminResponses = [];
+
+function showAdminPanel() {
+    adminPanel.classList.add('visible');
+    document.body.style.overflow = 'hidden';
+    loadAdminData();
+}
+
+function hideAdminPanel() {
+    adminPanel.classList.remove('visible');
+    document.body.style.overflow = '';
+}
+
+adminCloseBtn.addEventListener('click', hideAdminPanel);
+adminRefreshBtn.addEventListener('click', loadAdminData);
+
+// Admin Tabs
+document.querySelectorAll('.admin-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.admin-tab').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('adminTab-' + btn.dataset.admintab).classList.add('active');
+    });
+});
+
+// Load Data from Firestore
+async function loadAdminData() {
+    const guestsLoading = document.getElementById('adminGuestsLoading');
+    const guestsContent = document.getElementById('adminGuestsContent');
+    const wishesLoading = document.getElementById('adminWishesLoading');
+    const wishesContent = document.getElementById('adminWishesContent');
+
+    // Show loading
+    guestsLoading.style.display = 'block';
+    guestsContent.style.display = 'none';
+    wishesLoading.style.display = 'block';
+    wishesContent.style.display = 'none';
+
+    try {
+        const snapshot = await db.collection('rsvp').orderBy('timestamp', 'desc').get();
+        allAdminResponses = [];
+
+        snapshot.forEach(doc => {
+            allAdminResponses.push({ id: doc.id, ...doc.data() });
+        });
+
+        updateAdminStats(allAdminResponses);
+        renderAdminGuestList(allAdminResponses);
+        renderAdminWishes(allAdminResponses);
+    } catch (error) {
+        console.error('Error loading data:', error);
+        guestsLoading.innerHTML = '<p style="color: #e74c3c;">❌ Lỗi tải dữ liệu. Kiểm tra Firebase.</p>';
+        wishesLoading.innerHTML = '<p style="color: #e74c3c;">❌ Lỗi tải dữ liệu.</p>';
+    }
+}
+
+// Update Stats
+function updateAdminStats(responses) {
+    const attending = responses.filter(r => r.attendance === 'yes');
+    const declined = responses.filter(r => r.attendance === 'no');
+    const totalGuests = attending.reduce((sum, r) => sum + 1 + (parseInt(r.guestCount) || 0), 0);
+
+    animateAdminNumber('adminTotalResponses', responses.length);
+    animateAdminNumber('adminTotalAttending', attending.length);
+    animateAdminNumber('adminTotalGuests', totalGuests);
+    animateAdminNumber('adminTotalDeclined', declined.length);
+}
+
+function animateAdminNumber(elementId, target) {
+    const el = document.getElementById(elementId);
+    if (!el) return;
+    const duration = 600;
+    const start = parseInt(el.textContent) || 0;
+    const startTime = performance.now();
+
+    function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.round(start + (target - start) * eased);
+        if (progress < 1) requestAnimationFrame(update);
+    }
+    requestAnimationFrame(update);
+}
+
+// Escape HTML
+function escapeAdminHTML(str) {
+    const div = document.createElement('div');
+    div.textContent = str || '';
+    return div.innerHTML;
+}
+
+// Render Guest List
+function renderAdminGuestList(responses) {
+    const loading = document.getElementById('adminGuestsLoading');
+    const content = document.getElementById('adminGuestsContent');
+    loading.style.display = 'none';
+    content.style.display = 'block';
+
+    if (responses.length === 0) {
+        content.innerHTML = '<div class="admin-empty"><div class="admin-empty-icon">📭</div><p>Chưa có phản hồi nào</p></div>';
+        return;
+    }
+
+    let html = `<div class="admin-table-wrapper"><table>
+        <thead><tr>
+            <th>#</th><th>Họ và Tên</th><th>Tham dự</th><th>Đi cùng</th><th>Lời chúc</th><th>Thời gian</th><th>Xóa</th>
+        </tr></thead><tbody>`;
+
+    responses.forEach((r, i) => {
+        const date = r.timestamp ? new Date(r.timestamp.seconds * 1000).toLocaleString('vi-VN') : 'N/A';
+        const badge = r.attendance === 'yes'
+            ? '<span class="admin-badge admin-badge-yes">✅ Có</span>'
+            : '<span class="admin-badge admin-badge-no">❌ Không</span>';
+        const wish = r.wishes ? (r.wishes.length > 40 ? r.wishes.substring(0, 40) + '...' : r.wishes) : '—';
+
+        html += `<tr>
+            <td>${i + 1}</td>
+            <td style="font-weight:700; color:var(--text-primary);">${escapeAdminHTML(r.name)}</td>
+            <td>${badge}</td>
+            <td style="text-align:center;">${r.guestCount || 0}</td>
+            <td>${escapeAdminHTML(wish)}</td>
+            <td style="font-size:0.78rem; color:var(--text-muted); white-space:nowrap;">${date}</td>
+            <td><button class="admin-delete-btn" onclick="deleteAdminResponse('${r.id}')">🗑️</button></td>
+        </tr>`;
+    });
+
+    html += '</tbody></table></div>';
+    content.innerHTML = html;
+}
+
+// Render Wishes
+function renderAdminWishes(responses) {
+    const loading = document.getElementById('adminWishesLoading');
+    const content = document.getElementById('adminWishesContent');
+    loading.style.display = 'none';
+    content.style.display = 'block';
+
+    const withWishes = responses.filter(r => r.wishes && r.wishes.trim());
+    if (withWishes.length === 0) {
+        content.innerHTML = '<div class="admin-empty"><div class="admin-empty-icon">💌</div><p>Chưa có lời chúc nào</p></div>';
+        return;
+    }
+
+    let html = '<div class="admin-wishes-grid">';
+    withWishes.forEach(r => {
+        const date = r.timestamp ? new Date(r.timestamp.seconds * 1000).toLocaleString('vi-VN') : '';
+        html += `<div class="admin-wish-card">
+            <div class="admin-wish-text">${escapeAdminHTML(r.wishes)}</div>
+            <div class="admin-wish-author">${escapeAdminHTML(r.name)}</div>
+            <div class="admin-wish-date">${date}</div>
+        </div>`;
+    });
+    html += '</div>';
+    content.innerHTML = html;
+}
+
+// Delete Response
+window.deleteAdminResponse = async function(id) {
+    if (!confirm('Bạn có chắc muốn xóa phản hồi này?')) return;
+    try {
+        await db.collection('rsvp').doc(id).delete();
+        loadAdminData();
+    } catch (error) {
+        alert('Lỗi khi xóa: ' + error.message);
+    }
+};
+
+// Export CSV
+adminExportBtn.addEventListener('click', () => {
+    if (allAdminResponses.length === 0) {
+        alert('Không có dữ liệu để xuất.');
+        return;
+    }
+
+    const headers = ['STT', 'Họ và Tên', 'Tham dự', 'Người đi cùng', 'Lời chúc', 'Thời gian'];
+    const csvContent = [
+        headers.join(','),
+        ...allAdminResponses.map((r, i) => {
+            const date = r.timestamp ? new Date(r.timestamp.seconds * 1000).toLocaleString('vi-VN') : 'N/A';
+            return [
+                i + 1,
+                `"${(r.name || '').replace(/"/g, '""')}"`,
+                r.attendance === 'yes' ? 'Có' : 'Không',
+                r.guestCount || 0,
+                `"${(r.wishes || '').replace(/"/g, '""')}"`,
+                `"${date}"`
+            ].join(',');
+        })
+    ].join('\n');
+
+    const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `rsvp_graduation_${new Date().toISOString().slice(0, 10)}.csv`;
+    link.click();
+    URL.revokeObjectURL(link.href);
+});
 
 // ============================================
 // SMOOTH SCROLL FOR INTERNAL LINKS
@@ -565,3 +778,4 @@ console.log(
     '',
     'font-size: 12px; color: #555;'
 );
+

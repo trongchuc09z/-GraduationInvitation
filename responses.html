@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Danh sách phản hồi - Lễ Tốt Nghiệp Huyền Linh</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+</head>
+<body class="responses-page">
+    <main class="responses-page-main">
+        <section class="responses-section" id="responses">
+            <div class="section-ornament">✦</div>
+            <div class="section-header">
+                <p class="section-label">Phản hồi</p>
+                <h2>Mọi Người Đã Xác Nhận</h2>
+            </div>
+
+            <div class="responses-panel">
+                <div class="responses-summary" id="responsesSummary">
+                    <div class="responses-summary-item">
+                        <span class="responses-summary-number" id="publicTotalResponses">0</span>
+                        <span class="responses-summary-label">phản hồi</span>
+                    </div>
+                    <div class="responses-summary-item">
+                        <span class="responses-summary-number" id="publicTotalAttending">0</span>
+                        <span class="responses-summary-label">sẽ đến</span>
+                    </div>
+                    <div class="responses-summary-item">
+                        <span class="responses-summary-number" id="publicTotalPeople">0</span>
+                        <span class="responses-summary-label">người tham dự</span>
+                    </div>
+                </div>
+
+                <div class="responses-loading" id="responsesLoading">
+                    <span class="responses-spinner"></span>
+                    <span>Đang tải phản hồi...</span>
+                </div>
+
+                <div class="responses-list" id="responsesList" aria-live="polite"></div>
+            </div>
+        </section>
+    </main>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="responses.js"></script>
+</body>
+</html>

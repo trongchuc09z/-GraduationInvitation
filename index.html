@@ -249,6 +249,68 @@
         </div>
     </div>
 
+    <!-- ======== EMBEDDED ADMIN DASHBOARD (Hidden) ======== -->
+    <div class="admin-panel" id="adminPanel">
+        <div class="admin-panel-header">
+            <h2 class="admin-panel-title">📊 Dashboard — <span>Huyền Linh</span></h2>
+            <div class="admin-panel-actions">
+                <button class="admin-action-btn admin-export-btn" id="adminExportBtn">📥 Xuất CSV</button>
+                <button class="admin-action-btn admin-refresh-btn" id="adminRefreshBtn">🔄 Làm mới</button>
+                <button class="admin-action-btn admin-close-btn" id="adminCloseBtn">✕ Đóng</button>
+            </div>
+        </div>
+
+        <div class="admin-panel-body">
+            <!-- Stats -->
+            <div class="admin-stats">
+                <div class="admin-stat-card" style="background: var(--pink-light);">
+                    <div class="admin-stat-icon">📝</div>
+                    <div class="admin-stat-number" id="adminTotalResponses">0</div>
+                    <div class="admin-stat-label">Tổng phản hồi</div>
+                </div>
+                <div class="admin-stat-card" style="background: var(--green-light);">
+                    <div class="admin-stat-icon">✅</div>
+                    <div class="admin-stat-number" id="adminTotalAttending">0</div>
+                    <div class="admin-stat-label">Sẽ tham dự</div>
+                </div>
+                <div class="admin-stat-card" style="background: var(--yellow-light);">
+                    <div class="admin-stat-icon">👥</div>
+                    <div class="admin-stat-number" id="adminTotalGuests">0</div>
+                    <div class="admin-stat-label">Tổng số người</div>
+                </div>
+                <div class="admin-stat-card" style="background: var(--blue-light);">
+                    <div class="admin-stat-icon">❌</div>
+                    <div class="admin-stat-number" id="adminTotalDeclined">0</div>
+                    <div class="admin-stat-label">Không đến</div>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="admin-tabs">
+                <button class="admin-tab active" data-admintab="guests">👤 Danh sách khách</button>
+                <button class="admin-tab" data-admintab="wishes">💌 Lời chúc</button>
+            </div>
+
+            <!-- Guest List -->
+            <div class="admin-tab-content active" id="adminTab-guests">
+                <div class="admin-loading" id="adminGuestsLoading">
+                    <div class="spinner"></div>
+                    <p>Đang tải dữ liệu...</p>
+                </div>
+                <div id="adminGuestsContent" style="display:none;"></div>
+            </div>
+
+            <!-- Wishes -->
+            <div class="admin-tab-content" id="adminTab-wishes">
+                <div class="admin-loading" id="adminWishesLoading">
+                    <div class="spinner"></div>
+                    <p>Đang tải lời chúc...</p>
+                </div>
+                <div id="adminWishesContent" style="display:none;"></div>
+            </div>
+        </div>
+    </div>
+
     <!-- ======== FIREBASE SDK ======== -->
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
