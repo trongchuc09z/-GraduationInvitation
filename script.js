@@ -20,7 +20,7 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 // ===== MẬT KHẨU ADMIN (thay đổi theo ý bạn) =====
-const ADMIN_PASSWORD = "admin2026";
+const ADMIN_PASSWORD = "trongchucdeptrai";
 
 // ===== NGÀY SỰ KIỆN =====
 const EVENT_DATE = new Date('2026-09-26T13:00:00+07:00');
